@@ -10,7 +10,12 @@ orgRouter.get("/departments", async (req, res) => {
         console.log("Loading department list...");
 
         const [rows] = await pool.query(
-            "SELECT DeptID, DeptName FROM Department"
+           `SELECT 
+    D.DeptID, 
+    D.DeptName, 
+    COALESCE(E.Name, 'No Manager Assigned') AS ManagerName
+    FROM Department D
+    LEFT JOIN Employee E ON D.DeptID = E.DeptID AND E.DesigID = 1;`
         );
 
         res.json(rows);
