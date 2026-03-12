@@ -1,24 +1,370 @@
-:root { --dark: #2c3e50; --light: #ecf0f1; --green: #27ae60; --red: #e74c3c; }
-body { font-family: sans-serif; margin: 0; display: flex; background: #f4f4f4; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Sidebar */
-.sidebar { width: 240px; height: 100vh; background: var(--dark); color: white; padding: 20px; }
-.sidebar ul { list-style: none; padding: 0; margin-top: 30px; }
-.sidebar li { padding: 15px; cursor: pointer; transition: 0.3s; border-radius: 5px; }
-.sidebar li:hover { background: #34495e; }
+body {
+  font-family: sans-serif;
+  background: #f0f2f5;
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+}
 
-/* Main Content */
-main { flex: 1; padding: 40px; }
-.content-section { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-.header-row { display: flex; justify-content: space-between; align-items: center; }
+.ems-wrap {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
 
-/* Table & UI */
-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
-.add-btn { background: var(--green); color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; }
+/* ── Sidebar ─────────────────────────────── */
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: #2c3e50;
+  color: white;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+}
 
-/* Modal */
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
-.modal-content { background: white; width: 350px; margin: 10% auto; padding: 25px; border-radius: 8px; }
-.modal-content input, select { width: 100%; padding: 10px; margin: 8px 0; }
-.save-btn { width: 100%; background: var(--dark); color: white; padding: 10px; border: none; cursor: pointer; }
+.sidebar h2 {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #ecf0f1;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar ul {
+  list-style: none;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.sidebar li {
+  padding: 10px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.72);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.18s, color 0.18s;
+}
+
+.sidebar li:hover,
+.sidebar li.active {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+.sidebar li.danger {
+  color: #e74c3c;
+  margin-top: auto;
+}
+
+.sidebar li.danger:hover {
+  background: rgba(231,76,60,0.15);
+}
+
+/* ── Main ────────────────────────────────── */
+main {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+.section { display: none; }
+.section.active { display: block; }
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header-row h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.add-btn {
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 9px 18px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: opacity 0.18s;
+}
+
+.add-btn:hover { opacity: 0.88; }
+
+/* ── Table ───────────────────────────────── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+
+thead th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #eee;
+  background: #fafafa;
+}
+
+tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+  vertical-align: middle;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: #f9fbff; }
+
+/* ── Avatar ──────────────────────────────── */
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #dbeafe;
+  color: #1e40af;
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* ── Badges ──────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge-eng { background: #dbeafe; color: #1e40af; }
+.badge-mkt { background: #dcfce7; color: #166534; }
+.badge-hr  { background: #fef3c7; color: #92400e; }
+.badge-fin { background: #fce7f3; color: #9d174d; }
+
+/* ── Action buttons ──────────────────────── */
+.action-btn {
+  background: none;
+  border: 1px solid #ddd;
+  color: #666;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  cursor: pointer;
+  margin-right: 4px;
+  transition: all 0.15s;
+}
+
+.action-btn:hover { background: #f5f5f5; color: #333; }
+.action-btn.del:hover { border-color: #e74c3c; color: #e74c3c; }
+
+/* ── Org grid ────────────────────────────── */
+.grid-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 18px 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.card h4 {
+  font-size: 12px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.card ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.card ul li {
+  font-size: 13px;
+  color: #333;
+  padding: 7px 10px;
+  border-radius: 5px;
+  background: #f8f9fa;
+}
+
+/* ── Payroll ─────────────────────────────── */
+.payroll-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.payroll-row input {
+  padding: 9px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  width: 180px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.payroll-row input:focus { border-color: #2c3e50; }
+
+.payroll-row button {
+  background: #2c3e50;
+  color: white;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: opacity 0.18s;
+}
+
+.payroll-row button:hover { opacity: 0.88; }
+
+.pay-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 13px;
+}
+
+.pay-row:last-child { border-bottom: none; }
+.pay-label { color: #888; }
+.pay-deduct { color: #e74c3c; }
+.pay-total { font-weight: 600; color: #2c3e50; }
+
+/* ── Modal ───────────────────────────────── */
+.modal-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-bg.open { display: flex; }
+
+.modal-box {
+  background: white;
+  width: 340px;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.modal-header h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #aaa;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.close-btn:hover { color: #333; }
+
+.modal-box input,
+.modal-box select {
+  width: 100%;
+  padding: 9px 12px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s;
+  background: white;
+  color: #333;
+}
+
+.modal-box input:focus,
+.modal-box select:focus { border-color: #2c3e50; }
+
+.save-btn {
+  width: 100%;
+  background: #2c3e50;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 4px;
+  transition: opacity 0.18s;
+}
+
+.save-btn:hover { opacity: 0.88; }
+
+
+/* ── Payroll status ──────────────────────────────────────────────────────────── */
+.attend-status {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.attend-status.present { background: #dcfce7; color: #166534; }
+.attend-status.absent  { background: #fee2e2; color: #991b1b; }
+
+.pay-empty {
+  font-size: 13px;
+  color: #aaa;
+  padding: 6px 0;
+}

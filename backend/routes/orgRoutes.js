@@ -19,7 +19,7 @@ orgRouter.get("/departments", async (req, res) => {
         );
 
         res.json(rows);
-
+        
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Error loading departments" });
@@ -70,21 +70,36 @@ orgRouter.get("/designations", async (req, res) => {
 orgRouter.post("/designations", async (req, res) => {
     try {
         const { DesigID, DesigName } = req.body;
-
+        
         console.log("Creating new designation:", DesigName);
-
+        
         await pool.query(
             "INSERT INTO Designation (DesigID, DesigName) VALUES (?, ?)",
             [DesigID, DesigName]
         );
-
+        
         res.json({ message: "Designation created successfully" });
-
+        
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Error creating designation" });
     }
 });
+
+orgRouter.get("/designations", async (req,res)=>{
+    try {
+        console.log("Fetching Designations...")
+        const [rows] = await pool.query(
+            "SELECT * from Designation "
+        )
+        res.json(rows);
+        
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error Fetching Designations", error:error.message });
+    }
+})
 
 
 export default orgRouter;

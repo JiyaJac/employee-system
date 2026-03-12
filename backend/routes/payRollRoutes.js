@@ -4,8 +4,9 @@ const payRollRouter = express.Router();
 
 // POST: Mark daily attendance
 payRollRouter.post("/attendance", async (req, res) => {
+    const EmpID = req.body.EmpID
     if (!EmpID){
-
+            return res.status(500).json({message:'Emp id is required'})
     }
     console.log("Logging attendance for EmpID:", req.body.EmpID);
     const today = new Date().toISOString().split('T')[0];

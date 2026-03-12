@@ -1,78 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Employee Management System</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <nav class="sidebar">
-    <h2>EMS Admin</h2>
-    <ul>
-        <li onclick="showSection('employees')">👥 Employee Module</li>
-        <li onclick="showSection('org')">🏢 Organization</li>
-        <li onclick="showSection('payroll')">💰 Payroll & HR</li>
-        <li onclick="logout()" style="margin-top: 20px; color: #e74c3c; font-weight: bold;">🔒 Logout</li>
-    </ul>
-</nav>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="ems-wrap">
+      <nav class="sidebar">
+        <h2>EMS Admin</h2>
+        <ul>
+          <li class="active" onclick="showSection('employees', this)">&#x1F465; Employee Module</li>
+          <li onclick="showSection('org', this)">&#x1F3E2; Organization</li>
+          <li onclick="showSection('payroll', this)">&#x1F4B0; Payroll &amp; HR</li>
+          <li class="danger" onclick="alert('Logged out')">&#x1F512; Logout</li>
+        </ul>
+      </nav>
 
-    <main>
-        <section id="employees" class="content-section">
-            <div class="header-row">
-                <h3>Employee Directory</h3>
-                <button class="add-btn" onclick="openModal()">+ Add Employee</button>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th><th>Name</th><th>Dept</th><th>Designation</th><th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="emp-table-body"></tbody>
-            </table>
+      <main>
+        <section id="employees" class="section active">
+          <div class="header-row">
+            <h3>Employee directory</h3>
+            <button class="add-btn" onclick="openModal()">+ Add employee</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Dept</th>
+                <th>Designation</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="emp-table-body"></tbody>
+          </table>
         </section>
 
-        <section id="org" class="content-section" style="display:none;">
-            <h3>Department & Designations</h3>
-            <div class="grid-container">
-                <div class="card">
-                    <h4>Departments</h4>
-                    <ul id="dept-list"></ul>
-                </div>
-                <div class="card">
-                    <h4>Job Titles</h4>
-                    <ul id="desig-list"></ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="payroll" class="content-section" style="display:none;">
-            <h3>Payroll & Attendance Logs</h3>
+        <section id="org" class="section">
+          <div class="header-row"><h3>Departments &amp; designations</h3></div>
+          <div class="grid-cards">
             <div class="card">
-                <p>Select Employee ID to view Salary Slips or Attendance:</p>
-                <input type="number" id="search-id" placeholder="Enter Emp ID">
-                <button onclick="fetchPayrollData()">View Records</button>
+              <h4>Departments</h4>
+              <ul id="dept-list"></ul>
             </div>
-            <div id="payroll-results"></div>
+            <div class="card">
+              <h4>Job titles</h4>
+              <ul id="desig-list"></ul>
+            </div>
+          </div>
         </section>
-    </main>
 
-    <div id="modal-overlay" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h3>Register New Employee</h3>
-            <form id="emp-form">
-                <input type="number" id="emp-id" placeholder="Emp ID" required>
-                <input type="text" id="emp-name" placeholder="Full Name" required>
-                <input type="number" id="emp-age" placeholder="Age">
-                <input type="text" id="emp-phone" placeholder="Phone">
-                <select id="emp-dept"><option value="1">IT</option><option value="2">HR</option></select>
-                <select id="emp-desig"><option value="101">Developer</option><option value="102">Manager</option></select>
-                <button type="submit" class="save-btn">Save to Database</button>
-            </form>
+        <section id="payroll" class="section">
+          <div class="header-row"><h3>Payroll &amp; attendance logs</h3></div>
+            <p>Select Employee ID to view Salary Slips or Attendance:</p>
+            <div class="payroll-row">
+              <input type="number" id="search-id" placeholder="Enter Emp ID" />
+              <button onclick="fetchPayrollData()">View Records</button>
+              <button onclick="markAttendance()">Mark Attendance</button>
+            </div>
+
+            <div class="payroll-row">
+              <input type="number" id="salary-amount" placeholder="Salary Amount" />
+              <button onclick="postSalary()">Post Salary</button>
+            </div>
+          </div>
+          <div id="payroll-results"></div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal-overlay" class="modal-bg">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>Register new employee</h3>
+          <button class="close-btn" onclick="closeModal()">&#x2715;</button>
         </div>
+        <form id="emp-form" onsubmit="saveEmployee(event)">
+          <input type="number" id="emp-id" placeholder="Employee ID" required />
+          <input type="text" id="emp-name" placeholder="Full name" required />
+          <input type="number" id="emp-age" placeholder="Age" />
+          <input type="text" id="emp-phone" placeholder="Phone number" />
+          <select id="emp-dept">
+            
+          </select>
+          <select id="emp-desig">
+            
+          </select>
+          <button type="submit" class="save-btn">Save to database</button>
+        </form>
+      </div>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

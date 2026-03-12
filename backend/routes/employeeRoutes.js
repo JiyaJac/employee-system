@@ -72,6 +72,8 @@ employeeRoutes.post("/", async (req, res) => {
   } catch (err) {
     if (err.code === 'ER_DUP_ENTRY')
       return res.status(409).json({ error: "EmpID or Phone already exists" });
+    console.log(`ERROR: ${err.message}`)
+    
     res.status(500).json({ error: err.message });
   }
 });
