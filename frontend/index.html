@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="sidebar">
+    <h2>EMS Admin</h2>
+    <ul>
+        <li onclick="showSection('employees')">👥 Employee Module</li>
+        <li onclick="showSection('org')">🏢 Organization</li>
+        <li onclick="showSection('payroll')">💰 Payroll & HR</li>
+        <li onclick="logout()" style="margin-top: 20px; color: #e74c3c; font-weight: bold;">🔒 Logout</li>
+    </ul>
+</nav>
+
+    <main>
+        <section id="employees" class="content-section">
+            <div class="header-row">
+                <h3>Employee Directory</h3>
+                <button class="add-btn" onclick="openModal()">+ Add Employee</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th><th>Name</th><th>Dept</th><th>Designation</th><th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="emp-table-body"></tbody>
+            </table>
+        </section>
+
+        <section id="org" class="content-section" style="display:none;">
+            <h3>Department & Designations</h3>
+            <div class="grid-container">
+                <div class="card">
+                    <h4>Departments</h4>
+                    <ul id="dept-list"></ul>
+                </div>
+                <div class="card">
+                    <h4>Job Titles</h4>
+                    <ul id="desig-list"></ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="payroll" class="content-section" style="display:none;">
+            <h3>Payroll & Attendance Logs</h3>
+            <div class="card">
+                <p>Select Employee ID to view Salary Slips or Attendance:</p>
+                <input type="number" id="search-id" placeholder="Enter Emp ID">
+                <button onclick="fetchPayrollData()">View Records</button>
+            </div>
+            <div id="payroll-results"></div>
+        </section>
+    </main>
+
+    <div id="modal-overlay" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3>Register New Employee</h3>
+            <form id="emp-form">
+                <input type="number" id="emp-id" placeholder="Emp ID" required>
+                <input type="text" id="emp-name" placeholder="Full Name" required>
+                <input type="number" id="emp-age" placeholder="Age">
+                <input type="text" id="emp-phone" placeholder="Phone">
+                <select id="emp-dept"><option value="1">IT</option><option value="2">HR</option></select>
+                <select id="emp-desig"><option value="101">Developer</option><option value="102">Manager</option></select>
+                <button type="submit" class="save-btn">Save to Database</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

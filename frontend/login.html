@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EMS - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific styles for the login box center-screen */
+        .login-container {
+            height: 100vh; width: 100vw;
+            display: flex; justify-content: center; align-items: center;
+            background: #2c3e50;
+        }
+        .login-box {
+            background: white; padding: 40px;
+            border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            text-align: center; width: 300px;
+        }
+        .login-box input { width: 90%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; }
+        .login-btn { width: 100%; padding: 12px; background: #27ae60; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body class="login-container">
+
+    <div class="login-box">
+        <h2>🔒 EMS Login</h2>
+        <p>Enter Admin Credentials</p>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        <p id="error-msg" style="color:red; display:none;">Invalid Credentials!</p>
+    </div>
+
+    <script>
+        document.getElementById('login-form').onsubmit = async (e) => {
+            e.preventDefault();
+            
+            // In the future, this will use: fetch('/api/auth/login')
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            // Simple logic for now: if admin, go to dashboard
+            if (user === "admin" && pass === "1234") {
+                window.location.href = "index.html";
+            } else {
+                document.getElementById('error-msg').style.display = "block";
+            }
+        };
+    </script>
+</body>
+</html>
